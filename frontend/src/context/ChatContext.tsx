@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
+import { API_BASE } from "../api/client";
 import { useDataset } from "./DatasetContext";
 
 export interface Message {
@@ -115,7 +116,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setMessages((prev) => [...prev, assistantMsg]);
 
       try {
-        const response = await fetch("/api/v1/chat", {
+        const response = await fetch(`${API_BASE}/chat`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ dataset_id: currentDatasetId, message: text.trim() }),

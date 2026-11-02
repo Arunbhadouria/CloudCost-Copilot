@@ -1,0 +1,43 @@
+services:
+  # Backend API Web Service
+  - type: web
+    name: cloudcost-api
+    runtime: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cloudcost-db
+          property: connectionString
+      - key: LLM_MODE
+        value: gemini
+      - key: GEMINI_MODEL
+        value: gemini-1.5-flash
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DEFAULT_SEED
+        value: "1"
+
+  # Frontend Web UI (Static Site)
+  - type: web
+    name: cloudcost-web
+    runtime: static
+    buildCommand: cd frontend && npm install -g pnpm && pnpm install && pnpm run build
+    staticPublishPath: frontend/dist
+    plan: free
+    region: oregon
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+databases:
+  # Free PostgreSQL Database
+  - name: cloudcost-db
+    databaseName: cloudcost
+    user: cloudcost
+    plan: free
+    region: oregon
