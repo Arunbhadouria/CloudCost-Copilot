@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  backend-test:
+    name: Backend Tests & Benchmark Eval
+    runs-on: ubuntu-latest
+    env:
+      LLM_MODE: mock
+      PYTHONPATH: backend
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install backend dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Run backend test suite (unit, safety, benchmark)
+        run: |
+          pytest -v
+
+      - name: Run small evaluation harness run
+        run: |
+          python backend/app/services/evaluation.py --seeds 100
+
+      - name: Verify review export script
+        run: |
+          python scripts/export_review.py
+          python scripts/export_review.py --stats
+
+  frontend-build:
+    name: Frontend Lint & Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: |
+          npm ci || npm install
+
+      - name: Type check and build
+        working-directory: frontend
+        run: |
+          npm run build
+

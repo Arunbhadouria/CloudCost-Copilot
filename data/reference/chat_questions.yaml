@@ -1,0 +1,286 @@
+# 30 Evaluation Questions for CloudCost Copilot
+# Categories:
+# 1. totals (10 questions): top services, total costs, breakdown by service/region/day
+# 2. comparison (8 questions): period comparisons, month-over-month, change analysis
+# 3. recommendation (7 questions): top savings ideas, idle/underused lookups
+# 4. unanswerable (5 questions): trick questions, out-of-scope, future forecasts
+
+questions:
+  # --- 1. Totals / Top Services (10) ---
+  - id: q01
+    category: totals
+    question: "What are my top 5 most expensive services?"
+    expected_tool: cost_query
+    expected_args:
+      group_by: service
+      limit: 5
+    is_unanswerable: false
+
+  - id: q02
+    category: totals
+    question: "Which service cost the most overall?"
+    expected_tool: cost_query
+    expected_args:
+      group_by: service
+      limit: 1
+    is_unanswerable: false
+
+  - id: q03
+    category: totals
+    question: "What are the top spending regions?"
+    expected_tool: cost_query
+    expected_args:
+      group_by: region
+      limit: 5
+    is_unanswerable: false
+
+  - id: q04
+    category: totals
+    question: "Show me the breakdown of costs by service."
+    expected_tool: cost_query
+    expected_args:
+      group_by: service
+    is_unanswerable: false
+
+  - id: q05
+    category: totals
+    question: "How much did we spend on Compute Engine?"
+    expected_tool: cost_query
+    expected_args:
+      group_by: service
+      service: "Compute Engine"
+    is_unanswerable: false
+
+  - id: q06
+    category: totals
+    question: "What is our daily cost trend?"
+    expected_tool: cost_query
+    expected_args:
+      group_by: day
+    is_unanswerable: false
+
+  - id: q07
+    category: totals
+    question: "Which region spent the most?"
+    expected_tool: cost_query
+    expected_args:
+      group_by: region
+      limit: 1
+    is_unanswerable: false
+
+  - id: q08
+    category: totals
+    question: "How much did Cloud SQL cost?"
+    expected_tool: cost_query
+    expected_args:
+      group_by: service
+      service: "Cloud SQL"
+    is_unanswerable: false
+
+  - id: q09
+    category: totals
+    question: "What are the top 3 services by cost?"
+    expected_tool: cost_query
+    expected_args:
+      group_by: service
+      limit: 3
+    is_unanswerable: false
+
+  - id: q10
+    category: totals
+    question: "Break down our cloud costs by region."
+    expected_tool: cost_query
+    expected_args:
+      group_by: region
+    is_unanswerable: false
+
+  # --- 2. Period Comparisons (8) ---
+  - id: q11
+    category: comparison
+    question: "Compare spend between January 2025 and February 2025."
+    expected_tool: compare_periods
+    expected_args:
+      period_a_start: "2025-01-01"
+      period_a_end: "2025-01-31"
+      period_b_start: "2025-02-01"
+      period_b_end: "2025-02-28"
+      group_by: service
+    is_unanswerable: false
+
+  - id: q12
+    category: comparison
+    question: "How did cost change between March 2025 and April 2025 by service?"
+    expected_tool: compare_periods
+    expected_args:
+      period_a_start: "2025-03-01"
+      period_a_end: "2025-03-31"
+      period_b_start: "2025-04-01"
+      period_b_end: "2025-04-30"
+      group_by: service
+    is_unanswerable: false
+
+  - id: q13
+    category: comparison
+    question: "Compare regional costs between May 2025 and June 2025."
+    expected_tool: compare_periods
+    expected_args:
+      period_a_start: "2025-05-01"
+      period_a_end: "2025-05-31"
+      period_b_start: "2025-06-01"
+      period_b_end: "2025-06-30"
+      group_by: region
+    is_unanswerable: false
+
+  - id: q14
+    category: comparison
+    question: "What is the spend difference between July 2025 and August 2025?"
+    expected_tool: compare_periods
+    expected_args:
+      period_a_start: "2025-07-01"
+      period_a_end: "2025-07-31"
+      period_b_start: "2025-08-01"
+      period_b_end: "2025-08-31"
+      group_by: service
+    is_unanswerable: false
+
+  - id: q15
+    category: comparison
+    question: "Did our service spend increase or decrease between September 2025 and October 2025?"
+    expected_tool: compare_periods
+    expected_args:
+      period_a_start: "2025-09-01"
+      period_a_end: "2025-09-30"
+      period_b_start: "2025-10-01"
+      period_b_end: "2025-10-31"
+      group_by: service
+    is_unanswerable: false
+
+  - id: q16
+    category: comparison
+    question: "Compare costs between 2025-01-01 to 2025-01-15 and 2025-01-16 to 2025-01-31."
+    expected_tool: compare_periods
+    expected_args:
+      period_a_start: "2025-01-01"
+      period_a_end: "2025-01-15"
+      period_b_start: "2025-01-16"
+      period_b_end: "2025-01-31"
+      group_by: service
+    is_unanswerable: false
+
+  - id: q17
+    category: comparison
+    question: "How did regional spending change from November 2025 to December 2025?"
+    expected_tool: compare_periods
+    expected_args:
+      period_a_start: "2025-11-01"
+      period_a_end: "2025-11-30"
+      period_b_start: "2025-12-01"
+      period_b_end: "2025-12-31"
+      group_by: region
+    is_unanswerable: false
+
+  - id: q18
+    category: comparison
+    question: "Compare period spend between early 2025 and late 2025."
+    expected_tool: compare_periods
+    expected_args:
+      period_a_start: "2025-01-01"
+      period_a_end: "2025-06-30"
+      period_b_start: "2025-07-01"
+      period_b_end: "2025-12-31"
+      group_by: service
+    is_unanswerable: false
+
+  # --- 3. Recommendation Lookups (7) ---
+  - id: q19
+    category: recommendation
+    question: "What are the top savings ideas?"
+    expected_tool: get_recommendation
+    expected_args:
+      top_n: 5
+    is_unanswerable: false
+
+  - id: q20
+    category: recommendation
+    question: "How much can we save by fixing idle resources?"
+    expected_tool: get_recommendation
+    expected_args:
+      top_n: 5
+    is_unanswerable: false
+
+  - id: q21
+    category: recommendation
+    question: "Show me the top recommendations to reduce cloud spend."
+    expected_tool: get_recommendation
+    expected_args:
+      top_n: 5
+    is_unanswerable: false
+
+  - id: q22
+    category: recommendation
+    question: "What is savings idea recommendation #1?"
+    expected_tool: get_recommendation
+    expected_args:
+      id: 1
+    is_unanswerable: false
+
+  - id: q23
+    category: recommendation
+    question: "What can we save on underused machines?"
+    expected_tool: get_recommendation
+    expected_args:
+      top_n: 5
+    is_unanswerable: false
+
+  - id: q24
+    category: recommendation
+    question: "Show me the highest priority saving recommendation."
+    expected_tool: get_recommendation
+    expected_args:
+      top_n: 1
+    is_unanswerable: false
+
+  - id: q25
+    category: recommendation
+    question: "Give me recommendations for unused infrastructure."
+    expected_tool: get_recommendation
+    expected_args:
+      top_n: 5
+    is_unanswerable: false
+
+  # --- 4. Unanswerable / Trick Questions (5) ---
+  - id: q26
+    category: unanswerable
+    question: "What will next month's cloud bill be?"
+    expected_tool: none
+    expected_args: {}
+    is_unanswerable: true
+
+  - id: q27
+    category: unanswerable
+    question: "Why did our AWS bill go up last week?"
+    expected_tool: none
+    expected_args: {}
+    is_unanswerable: true
+
+  - id: q28
+    category: unanswerable
+    question: "Can you delete all idle VMs right now?"
+    expected_tool: none
+    expected_args: {}
+    is_unanswerable: true
+
+  - id: q29
+    category: unanswerable
+    question: "Can you make up an estimated cost for next year?"
+    expected_tool: none
+    expected_args: {}
+    is_unanswerable: true
+
+  - id: q30
+    category: unanswerable
+    question: "What is our Azure subscription ID?"
+    expected_tool: none
+    expected_args: {}
+    is_unanswerable: true
+

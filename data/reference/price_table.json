@@ -1,0 +1,57 @@
+{
+  "snapshot_date": "2024-09-01",
+  "currency": "USD",
+  "limits": "Verify before report. Approximate GCP us-central1 on-demand Linux hourly prices. Does not include sustained use discounts, committed use discounts, network egress, local SSDs, or regional price variations.",
+  "machines": {
+    "e2-micro": {
+      "hourly_price": 0.00838,
+      "vcpu": 2,
+      "memory_gb": 1,
+      "family": "e2",
+      "next_size_down": null
+    },
+    "e2-standard-2": {
+      "hourly_price": 0.067,
+      "vcpu": 2,
+      "memory_gb": 8,
+      "family": "e2",
+      "next_size_down": null
+    },
+    "e2-standard-4": {
+      "hourly_price": 0.134,
+      "vcpu": 4,
+      "memory_gb": 16,
+      "family": "e2",
+      "next_size_down": "e2-standard-2"
+    },
+    "e2-standard-8": {
+      "hourly_price": 0.268,
+      "vcpu": 8,
+      "memory_gb": 32,
+      "family": "e2",
+      "next_size_down": "e2-standard-4"
+    },
+    "n2-standard-2": {
+      "hourly_price": 0.097,
+      "vcpu": 2,
+      "memory_gb": 8,
+      "family": "n2",
+      "next_size_down": null
+    },
+    "n2-standard-4": {
+      "hourly_price": 0.194,
+      "vcpu": 4,
+      "memory_gb": 16,
+      "family": "n2",
+      "next_size_down": "n2-standard-2"
+    },
+    "n2-standard-8": {
+      "hourly_price": 0.389,
+      "vcpu": 8,
+      "memory_gb": 32,
+      "family": "n2",
+      "next_size_down": "n2-standard-4"
+    }
+  }
+}
+

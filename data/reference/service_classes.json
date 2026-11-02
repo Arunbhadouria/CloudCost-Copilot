@@ -1,0 +1,60 @@
+{
+  "classes": {
+    "provisioned": {
+      "services": [
+        "Compute Engine",
+        "Kubernetes Engine",
+        "Cloud SQL",
+        "Cloud Memorystore",
+        "Cloud Dataproc"
+      ],
+      "rules": "idle + underused + weak-signal rules apply",
+      "description": "Resources with dedicated CPU/memory capacity allocated."
+    },
+    "serverless": {
+      "services": [
+        "Cloud Run",
+        "Cloud Functions",
+        "Dataflow",
+        "BigQuery",
+        "Cloud Build"
+      ],
+      "rules": "no idle rule (pay per use); cost view only",
+      "description": "Consumption-based pay-per-use services."
+    },
+    "storage_messaging": {
+      "services": [
+        "Cloud Storage",
+        "Firestore",
+        "Pub/Sub",
+        "Container Registry",
+        "Cloud CDN"
+      ],
+      "rules": "cost view only",
+      "description": "Storage volumes, document stores, message queues, and caches."
+    },
+    "network": {
+      "services": [
+        "Cloud VPC",
+        "Cloud VPN",
+        "Cloud NAT",
+        "Cloud Interconnect",
+        "Cloud Load Balancing",
+        "Cloud Armor",
+        "Cloud Endpoints"
+      ],
+      "rules": "cost view only",
+      "description": "Networking, egress, connectivity, and gateways."
+    },
+    "other_managed": {
+      "services": [
+        "Cloud Spanner",
+        "Cloud Data Fusion",
+        "AI Platform"
+      ],
+      "rules": "cost view only (future work; no machine/node info)",
+      "description": "Complex managed enterprise platforms."
+    }
+  }
+}
+

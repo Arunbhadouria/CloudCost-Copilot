@@ -1,0 +1,16 @@
+node_modules
+**/node_modules
+.venv
+**/.venv
+__pycache__
+**/__pycache__
+.pytest_cache
+**/.pytest_cache
+*.pyc
+dist
+**/dist
+.git
+**/.git
+cloudcost.db
+.env
+
