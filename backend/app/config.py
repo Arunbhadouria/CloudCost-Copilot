@@ -28,7 +28,7 @@ class Settings(BaseModel):
     """Application settings loaded from environment."""
     DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./cloudcost.db")
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
     LLM_MODE: str = os.getenv("LLM_MODE", "mock")  # 'mock' or 'live'
     DEFAULT_SEED: int = int(os.getenv("DEFAULT_SEED", "1"))
 

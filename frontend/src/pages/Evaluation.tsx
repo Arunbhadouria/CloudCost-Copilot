@@ -31,7 +31,7 @@ export const Evaluation: React.FC = () => {
         <button
           onClick={() => runMutation.mutate()}
           disabled={runMutation.isPending}
-          className="inline-flex items-center space-x-2 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow-xs transition disabled:opacity-50"
+          className="inline-flex items-center space-x-2 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-2xs transition disabled:opacity-50"
         >
           <Play className="w-3.5 h-3.5" />
           <span>{runMutation.isPending ? "Running benchmarks..." : "Run benchmark (Seeds 100-102)"}</span>
@@ -44,14 +44,14 @@ export const Evaluation: React.FC = () => {
           <div className="h-6 bg-slate-100 rounded w-full animate-pulse" />
         </div>
       ) : !results ? (
-        <div className="bg-white p-8 rounded-xl border border-slate-200 text-center text-xs text-slate-500">
+        <div className="card-surface p-8 rounded-xl border border-slate-200/90 text-center text-xs text-slate-500">
           No benchmark scores found. Click &quot;Run benchmark&quot; above to calculate scores.
         </div>
       ) : (
         <div className="space-y-6">
           {/* Table 1: Series vs Snapshot Finder Accuracy */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-            <div className="p-4 border-b border-slate-100">
+          <div className="card-surface rounded-xl border border-slate-200/90 shadow-2xs overflow-hidden">
+            <div className="p-4 border-b border-slate-200/90">
               <h3 className="text-sm font-semibold text-slate-900">
                 Resource Waste Finder Accuracy
               </h3>
@@ -62,10 +62,10 @@ export const Evaluation: React.FC = () => {
 
             <table className="w-full text-left border-collapse text-xs">
               <thead>
-                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+                <tr className="bg-slate-50/80 border-b border-slate-200/90 text-slate-600 font-semibold">
                   <th className="py-3 px-4">Analysis Path</th>
-                  <th className="py-3 px-4">Precision (How accurate were the flags)</th>
-                  <th className="py-3 px-4">Recall (Share of all wasted resources caught)</th>
+                  <th className="py-3 px-4">Precision (Accuracy of flags)</th>
+                  <th className="py-3 px-4">Recall (Share of waste caught)</th>
                   <th className="py-3 px-4">F1 Score</th>
                   <th className="py-3 px-4">Target (&gt;= 90% Recall)</th>
                 </tr>
@@ -75,13 +75,13 @@ export const Evaluation: React.FC = () => {
                   <td className="py-3 px-4 font-semibold text-slate-900">
                     Series Path (Full History)
                   </td>
-                  <td className="py-3 px-4 font-mono">
+                  <td className="py-3 px-4 font-mono tabular-nums">
                     {Math.round((results.series_path?.precision || 0) * 100)}%
                   </td>
-                  <td className="py-3 px-4 font-mono font-bold text-indigo-700">
+                  <td className="py-3 px-4 font-mono tabular-nums font-bold text-blue-700">
                     {Math.round((results.series_path?.recall || 0) * 100)}%
                   </td>
-                  <td className="py-3 px-4 font-mono">
+                  <td className="py-3 px-4 font-mono tabular-nums">
                     {results.series_path?.f1}
                   </td>
                   <td className="py-3 px-4">
@@ -103,16 +103,16 @@ export const Evaluation: React.FC = () => {
                   <td className="py-3 px-4 font-semibold text-slate-700">
                     Snapshot Path (Single Day)
                   </td>
-                  <td className="py-3 px-4 font-mono">
+                  <td className="py-3 px-4 font-mono tabular-nums">
                     {Math.round((results.snapshot_path?.precision || 0) * 100)}%
                   </td>
-                  <td className="py-3 px-4 font-mono">
+                  <td className="py-3 px-4 font-mono tabular-nums">
                     {Math.round((results.snapshot_path?.recall || 0) * 100)}%
                   </td>
-                  <td className="py-3 px-4 font-mono">
+                  <td className="py-3 px-4 font-mono tabular-nums">
                     {results.snapshot_path?.f1}
                   </td>
-                  <td className="py-3 px-4 text-slate-400">
+                  <td className="py-3 px-4 text-slate-400 font-mono tabular-nums">
                     Drop: {Math.round((results.snapshot_path?.recall_drop_vs_series || 0) * 100)}%
                   </td>
                 </tr>
@@ -121,8 +121,8 @@ export const Evaluation: React.FC = () => {
           </div>
 
           {/* Table 2: Hard Negative Workload False Positives */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-            <div className="p-4 border-b border-slate-100">
+          <div className="card-surface rounded-xl border border-slate-200/90 shadow-2xs overflow-hidden">
+            <div className="p-4 border-b border-slate-200/90">
               <h3 className="text-sm font-semibold text-slate-900">
                 Hard Negative Workload Isolation
               </h3>
@@ -132,30 +132,30 @@ export const Evaluation: React.FC = () => {
             </div>
 
             <div className="p-4 grid grid-cols-2 md:grid-cols-4 gap-4 text-xs">
-              <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                <p className="text-[11px] text-slate-400">Disaster Recovery (role=dr)</p>
-                <p className="text-base font-bold text-slate-900 mt-1">
+              <div className="bg-slate-50/80 p-3 rounded-lg border border-slate-200/80">
+                <p className="text-[11px] text-slate-500 font-medium">Disaster Recovery (role=dr)</p>
+                <p className="text-base font-bold text-slate-900 mt-1 font-mono tabular-nums">
                   {results.series_path?.hard_negative_fps?.dr || 0} false flags
                 </p>
               </div>
 
-              <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                <p className="text-[11px] text-slate-400">Batch Processing (role=batch)</p>
-                <p className="text-base font-bold text-slate-900 mt-1">
+              <div className="bg-slate-50/80 p-3 rounded-lg border border-slate-200/80">
+                <p className="text-[11px] text-slate-500 font-medium">Batch Processing (role=batch)</p>
+                <p className="text-base font-bold text-slate-900 mt-1 font-mono tabular-nums">
                   {results.series_path?.hard_negative_fps?.batch || 0} false flags
                 </p>
               </div>
 
-              <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                <p className="text-[11px] text-slate-400">Bursty Servers</p>
-                <p className="text-base font-bold text-slate-900 mt-1">
+              <div className="bg-slate-50/80 p-3 rounded-lg border border-slate-200/80">
+                <p className="text-[11px] text-slate-500 font-medium">Bursty Servers</p>
+                <p className="text-base font-bold text-slate-900 mt-1 font-mono tabular-nums">
                   {results.series_path?.hard_negative_fps?.bursty || 0} false flags
                 </p>
               </div>
 
-              <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                <p className="text-[11px] text-slate-400">Normal Servers</p>
-                <p className="text-base font-bold text-slate-900 mt-1">
+              <div className="bg-slate-50/80 p-3 rounded-lg border border-slate-200/80">
+                <p className="text-[11px] text-slate-500 font-medium">Normal Servers</p>
+                <p className="text-base font-bold text-slate-900 mt-1 font-mono tabular-nums">
                   {results.series_path?.hard_negative_fps?.normal || 0} false flags
                 </p>
               </div>

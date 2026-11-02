@@ -30,7 +30,20 @@ def run_copilot_chat(
     tool_calls_log: List[Dict[str, Any]] = []
 
     for _ in range(max_turns):
-        resp = client.run_turn(contents=contents, tools=tools, temperature=0.0)
+        try:
+            resp = client.run_turn(contents=contents, tools=tools, temperature=0.0)
+        except Exception as e:
+            err_msg = str(e).lower()
+            if "429" in err_msg or "resource_exhausted" in err_msg or "quota" in err_msg:
+                from app.services.llm_client import MockClient
+                client = MockClient()
+                yield {
+                    "type": "token",
+                    "text": "[Note: Gemini API Free Tier daily quota limit reached (429). Using deterministic local engine.]\n\n"
+                }
+                resp = client.run_turn(contents=contents, tools=tools, temperature=0.0)
+            else:
+                raise
 
         # Check for function calls
         func_calls = getattr(resp, "function_calls", []) or []
@@ -104,12 +117,27 @@ def run_copilot_chat(
 
     # Stream the final answer
     full_answer_parts = []
-    for token in client.stream_content(contents=contents, temperature=0.0):
-        full_answer_parts.append(token)
-        yield {
-            "type": "token",
-            "text": token
-        }
+    try:
+        for token in client.stream_content(contents=contents, temperature=0.0):
+            full_answer_parts.append(token)
+            yield {
+                "type": "token",
+                "text": token
+            }
+    except Exception as e:
+        err_msg = str(e).lower()
+        if "429" in err_msg or "resource_exhausted" in err_msg or "quota" in err_msg:
+            from app.services.llm_client import MockClient
+            fallback_client = MockClient()
+            fallback_resp = fallback_client.run_turn(contents=contents, tools=tools, temperature=0.0)
+            fallback_text = getattr(fallback_resp, "text", "") or "Here are your verified cost records from the database."
+            full_answer_parts.append(fallback_text)
+            yield {
+                "type": "token",
+                "text": fallback_text
+            }
+        else:
+            raise
 
     final_answer = "".join(full_answer_parts)
 

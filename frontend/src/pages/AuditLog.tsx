@@ -18,10 +18,10 @@ export const AuditLog: React.FC = () => {
         </p>
       </div>
 
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-        <div className="p-4 border-b border-slate-100 flex items-center justify-between">
+      <div className="card-surface rounded-xl border border-slate-200/90 shadow-2xs overflow-hidden">
+        <div className="p-4 border-b border-slate-200/90 flex items-center justify-between">
           <h3 className="text-sm font-semibold text-slate-900">Action History</h3>
-          <span className="text-xs text-slate-400">{logs.length} actions</span>
+          <span className="text-xs text-slate-400 font-mono">{logs.length} actions</span>
         </div>
 
         {isLoading ? (

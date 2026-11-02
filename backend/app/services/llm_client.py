@@ -104,13 +104,23 @@ class GeminiClient:
 
     def _call_with_retry(self, func, *args, max_retries: int = 4, **kwargs):
         delay = 1.0
+        current_model = kwargs.get("model", self.model)
         for attempt in range(max_retries):
             try:
                 time.sleep(0.1)  # small throttle
                 return func(*args, **kwargs)
             except Exception as e:
                 err_str = str(e).lower()
-                if ("429" in err_str or "rate" in err_str or "50" in err_str) and attempt < max_retries - 1:
+                is_rate_limit = "429" in err_str or "resource_exhausted" in err_str or "quota" in err_str or "rate" in err_str
+                is_daily_limit = "per day" in err_str or "daily" in err_str or "limit: 20" in err_str
+
+                # If daily quota exceeded on a preview model, seamlessly fallback to gemini-1.5-flash (1500 RPD)
+                if is_rate_limit and is_daily_limit and "1.5" not in str(current_model):
+                    kwargs["model"] = "gemini-1.5-flash"
+                    current_model = "gemini-1.5-flash"
+                    continue
+
+                if is_rate_limit and attempt < max_retries - 1:
                     time.sleep(delay)
                     delay *= 2.0
                 else:

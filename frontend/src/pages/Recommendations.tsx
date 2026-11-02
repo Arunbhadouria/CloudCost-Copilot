@@ -101,7 +101,7 @@ export const Recommendations: React.FC = () => {
         </div>
         <button
           onClick={handleRunFinders}
-          className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg shadow-xs transition"
+          className="inline-flex items-center space-x-1.5 px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-2xs transition"
         >
           <Sparkles className="w-3.5 h-3.5" />
           <span>Refresh ideas</span>
@@ -109,16 +109,16 @@ export const Recommendations: React.FC = () => {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-3">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200/90 pb-3">
         {/* Status Tabs */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1.5">
           {["open", "accepted", "dismissed", "all"].map((st) => (
             <button
               key={st}
               onClick={() => setStatusFilter(st)}
               className={`px-3 py-1.5 text-xs font-medium rounded-lg capitalize transition ${
                 statusFilter === st
-                  ? "bg-indigo-50 text-indigo-700 font-semibold"
+                  ? "bg-blue-50 text-blue-700 font-semibold border border-blue-200/80 shadow-2xs"
                   : "text-slate-600 hover:bg-slate-100"
               }`}
             >
@@ -129,12 +129,12 @@ export const Recommendations: React.FC = () => {
 
         {/* Type Filter */}
         <div className="flex items-center space-x-2">
-          <label htmlFor="type-filter-select" className="text-xs text-slate-500">Filter type:</label>
+          <label htmlFor="type-filter-select" className="text-xs font-medium text-slate-500">Filter type:</label>
           <select
             id="type-filter-select"
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="text-xs bg-white border border-slate-300 rounded-md px-2.5 py-1 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-1 text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-600"
           >
             <option value="all">All types</option>
             <option value="idle">Not being used</option>
@@ -145,7 +145,7 @@ export const Recommendations: React.FC = () => {
       </div>
 
       {/* 5-Column Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+      <div className="card-surface rounded-xl border border-slate-200/90 shadow-2xs overflow-hidden">
         {isLoading ? (
           <div className="p-8 space-y-4">
             <div className="h-6 bg-slate-100 rounded w-full animate-pulse" />
@@ -154,7 +154,7 @@ export const Recommendations: React.FC = () => {
           </div>
         ) : recommendations.length === 0 ? (
           <div className="p-12 text-center text-slate-500 text-sm space-y-2">
-            <p className="font-medium text-slate-700">No savings ideas found in this view.</p>
+            <p className="font-semibold text-slate-700">No savings ideas found in this view.</p>
             <p className="text-xs text-slate-400">
               Try switching status filters or click &quot;Refresh ideas&quot;.
             </p>
@@ -162,7 +162,7 @@ export const Recommendations: React.FC = () => {
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-600">
+              <tr className="bg-slate-50/80 border-b border-slate-200/90 text-xs font-semibold text-slate-600">
                 <th className="py-3 px-4">Resource</th>
                 <th className="py-3 px-4">What&apos;s wrong</th>
                 <th className="py-3 px-4">Possible savings</th>
@@ -177,23 +177,23 @@ export const Recommendations: React.FC = () => {
                   <tr
                     key={rec.id}
                     onClick={() => handleOpenDrawer(rec)}
-                    className="hover:bg-slate-50 cursor-pointer transition"
+                    className="hover:bg-slate-50/80 cursor-pointer transition"
                   >
                     {/* 1. Resource */}
                     <td className="py-3 px-4 font-semibold text-slate-900">
-                      <div>{rec.resource_id}</div>
+                      <div className="font-mono text-xs">{rec.resource_id}</div>
                       <div className="text-[11px] font-normal text-slate-400">{rec.service_name}</div>
                     </td>
 
                     {/* 2. What's wrong */}
                     <td className="py-3 px-4">
-                      <span className="inline-block px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-medium text-[11px]">
+                      <span className="inline-block px-2 py-0.5 rounded-md bg-blue-50 border border-blue-200/60 text-blue-700 font-semibold text-[11px]">
                         {translateFindingType(rec.type)}
                       </span>
                     </td>
 
                     {/* 3. Possible savings */}
-                    <td className="py-3 px-4 font-medium text-slate-900">
+                    <td className="py-3 px-4 font-bold text-slate-900 tabular-nums">
                       {formatMoney(rec.savings_mid)}{" "}
                       <span className="text-[11px] text-slate-400 font-normal">
                         {translateUnit(rec.savings_unit)}
@@ -251,35 +251,35 @@ export const Recommendations: React.FC = () => {
               {/* What's wrong & explanation */}
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
                     Finding
                   </span>
-                  <span className="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded text-xs font-medium">
+                  <span className="px-2 py-0.5 bg-blue-50 border border-blue-200/60 text-blue-700 rounded-md text-xs font-semibold">
                     {translateFindingType(selectedRec.type)}
                   </span>
                 </div>
-                <p className="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-lg border border-slate-100">
+                <p className="text-xs text-slate-700 leading-relaxed bg-slate-50/80 p-3 rounded-xl border border-slate-200/80">
                   {selectedRec.reason}
                 </p>
               </div>
 
               {/* Metrics grid */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                  <p className="text-[11px] font-medium text-slate-400">Service &amp; Region</p>
+                <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-200/80">
+                  <p className="text-[11px] font-medium text-slate-500">Service &amp; Region</p>
                   <p className="text-xs font-semibold text-slate-800 mt-0.5">{selectedRec.service_name}</p>
                 </div>
 
-                <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                  <p className="text-[11px] font-medium text-slate-400">How hard to fix</p>
+                <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-200/80">
+                  <p className="text-[11px] font-medium text-slate-500">How hard to fix</p>
                   <p className={`text-xs font-semibold mt-0.5 ${translateEffort(selectedRec.effort).color}`}>
                     {translateEffort(selectedRec.effort).label}
                   </p>
                 </div>
 
-                <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                  <p className="text-[11px] font-medium text-slate-400">Estimated savings</p>
-                  <p className="text-xs font-bold text-slate-900 mt-0.5">
+                <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-200/80">
+                  <p className="text-[11px] font-medium text-slate-500">Estimated savings</p>
+                  <p className="text-xs font-bold text-slate-900 mt-0.5 tabular-nums">
                     {formatMoney(selectedRec.savings_mid)}{" "}
                     <span className="text-[10px] font-normal text-slate-500">
                       {translateUnit(selectedRec.savings_unit)}
@@ -287,8 +287,8 @@ export const Recommendations: React.FC = () => {
                   </p>
                 </div>
 
-                <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-                  <p className="text-[11px] font-medium text-slate-400">Price calculation</p>
+                <div className="bg-slate-50/80 p-3 rounded-xl border border-slate-200/80">
+                  <p className="text-[11px] font-medium text-slate-500">Price calculation</p>
                   <p className="text-xs font-medium text-slate-700 mt-0.5">
                     {translateBasis(selectedRec.savings_basis)}
                   </p>
@@ -300,7 +300,7 @@ export const Recommendations: React.FC = () => {
                 <button
                   onClick={() => previewMutation.mutate(selectedRec.id)}
                   disabled={previewMutation.isPending}
-                  className="w-full flex items-center justify-center space-x-2 py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-lg shadow-xs transition"
+                  className="w-full flex items-center justify-center space-x-2 py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl shadow-2xs transition"
                 >
                   <Terminal className="w-4 h-4" />
                   <span>{previewMutation.isPending ? "Generating preview..." : "Preview the fix"}</span>

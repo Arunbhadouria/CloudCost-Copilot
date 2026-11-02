@@ -24,7 +24,7 @@ export const Anomalies: React.FC = () => {
       </div>
 
       {activeDataset?.kind === "csv" ? (
-        <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-xs text-center space-y-2">
+        <div className="card-surface p-8 rounded-xl border border-slate-200/90 shadow-2xs text-center space-y-2">
           <AlertTriangle className="w-8 h-8 text-amber-500 mx-auto" />
           <h3 className="text-sm font-semibold text-slate-800">Insufficient history</h3>
           <p className="text-xs text-slate-500 max-w-md mx-auto">
@@ -37,7 +37,7 @@ export const Anomalies: React.FC = () => {
           <div className="h-6 bg-slate-100 rounded w-full animate-pulse" />
         </div>
       ) : anomalies.length === 0 ? (
-        <div className="bg-white p-8 rounded-xl border border-slate-200 shadow-xs text-center text-xs text-slate-500">
+        <div className="card-surface p-8 rounded-xl border border-slate-200/90 shadow-2xs text-center text-xs text-slate-500">
           No unusual cost jumps detected for this dataset.
         </div>
       ) : (
@@ -45,24 +45,24 @@ export const Anomalies: React.FC = () => {
           {anomalies.map((anom) => (
             <div
               key={anom.id}
-              className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex items-center justify-between"
+              className="card-surface p-4 rounded-xl border border-slate-200/90 shadow-2xs flex items-center justify-between"
             >
               <div className="space-y-1">
                 <div className="flex items-center space-x-2">
-                  <TrendingUp className="w-4 h-4 text-red-500" />
+                  <TrendingUp className="w-4 h-4 text-rose-500" />
                   <span className="text-xs font-bold text-slate-900">{anom.service_name}</span>
-                  <span className="text-[11px] text-slate-400">
+                  <span className="text-[11px] text-slate-400 font-mono">
                     {formatDate(anom.start_date)} - {formatDate(anom.end_date)}
                   </span>
                 </div>
                 <div className="flex items-center space-x-3 text-xs text-slate-600">
-                  <span>Actual: <strong>{formatMoney(anom.actual)}</strong></span>
-                  <span>Expected: <strong>{formatMoney(anom.expected)}</strong></span>
+                  <span>Actual: <strong className="font-mono tabular-nums">{formatMoney(anom.actual)}</strong></span>
+                  <span>Expected: <strong className="font-mono tabular-nums">{formatMoney(anom.expected)}</strong></span>
                 </div>
               </div>
 
               <div className="text-right">
-                <span className="px-2.5 py-1 text-[11px] font-semibold rounded-md uppercase tracking-wider bg-red-50 text-red-700 border border-red-200">
+                <span className="px-2.5 py-1 text-[11px] font-semibold rounded-md uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200">
                   {anom.severity} jump
                 </span>
               </div>

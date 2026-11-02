@@ -11,6 +11,7 @@ import {
   BarChart3,
   TrendingDown,
   Info,
+  MessageSquare,
 } from "lucide-react";
 import { useChat } from "../context/ChatContext";
 import { useDataset } from "../context/DatasetContext";
@@ -45,7 +46,7 @@ export const Copilot: React.FC = () => {
   const faqCategories: FAQCategory[] = [
     {
       title: "Cost Breakdown & Spend",
-      icon: <BarChart3 className="w-4 h-4 text-indigo-500" />,
+      icon: <BarChart3 className="w-4 h-4 text-blue-600" />,
       questions: [
         "Which 3 services cost the most in this dataset?",
         "What are my top 5 most expensive services?",
@@ -56,7 +57,7 @@ export const Copilot: React.FC = () => {
     },
     {
       title: "Savings & Waste Opportunities",
-      icon: <TrendingDown className="w-4 h-4 text-emerald-500" />,
+      icon: <TrendingDown className="w-4 h-4 text-emerald-600" />,
       questions: [
         "What are the top savings ideas?",
         "Show me the top savings ideas for Compute Engine.",
@@ -67,7 +68,7 @@ export const Copilot: React.FC = () => {
     },
     {
       title: "Service-Specific Deep Dives",
-      icon: <Coins className="w-4 h-4 text-amber-500" />,
+      icon: <Coins className="w-4 h-4 text-amber-600" />,
       questions: [
         "How much did we spend on Compute Engine?",
         "How much did Cloud SQL cost?",
@@ -132,9 +133,12 @@ export const Copilot: React.FC = () => {
       </div>
 
       {/* Main Chat Scroll Area */}
-      <div className="flex-1 bg-white rounded-xl border border-slate-200 shadow-2xs p-5 overflow-y-auto space-y-4">
+      <div className="flex-1 bg-white rounded-xl border border-slate-200/90 shadow-2xs p-5 overflow-y-auto space-y-4">
         {messages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center max-w-lg mx-auto space-y-3 py-8">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100 mb-1">
+              <MessageSquare className="w-5 h-5" />
+            </div>
             <h3 className="text-sm font-semibold text-slate-800">What would you like to explore?</h3>
             <p className="text-xs text-slate-500 max-w-sm">
               Query total spend, top services, idle resources, or savings recommendations directly from your data.
@@ -145,7 +149,7 @@ export const Copilot: React.FC = () => {
                 <button
                   key={p.label}
                   onClick={() => handleSend(p.query)}
-                  className="p-3 text-left bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 transition"
+                  className="p-3 text-left bg-slate-50/70 hover:bg-blue-50/50 hover:border-blue-200 border border-slate-200 rounded-lg text-xs font-medium text-slate-700 transition"
                 >
                   <div className="font-semibold text-slate-900">{p.label}</div>
                   <div className="text-[11px] text-slate-500 mt-0.5 truncate">{p.query}</div>
@@ -160,18 +164,18 @@ export const Copilot: React.FC = () => {
               className={`flex flex-col ${m.role === "user" ? "items-end" : "items-start"}`}
             >
               <div
-                className={`max-w-2xl rounded-xl p-4 text-xs leading-relaxed ${
+                className={`max-w-2xl rounded-2xl p-4 text-xs leading-relaxed ${
                   m.role === "user"
-                    ? "bg-indigo-600 text-white rounded-br-2xs shadow-2xs"
-                    : "bg-slate-50 text-slate-900 border border-slate-200 rounded-bl-2xs shadow-2xs"
+                    ? "bg-slate-900 text-white rounded-tr-xs shadow-xs"
+                    : "bg-slate-50/80 text-slate-900 border border-slate-200/90 rounded-tl-xs shadow-2xs"
                 }`}
               >
                 <div className="whitespace-pre-wrap">
                   {m.content ? (
                     m.content
                   ) : (
-                    <span className="text-slate-400 italic flex items-center space-x-1.5">
-                      <Sparkles className="w-3.5 h-3.5 animate-pulse text-indigo-500" />
+                    <span className="text-slate-400 italic flex items-center space-x-2">
+                      <Sparkles className="w-3.5 h-3.5 animate-pulse text-blue-600" />
                       <span>Checking billing records with database queries...</span>
                     </span>
                   )}
@@ -181,8 +185,8 @@ export const Copilot: React.FC = () => {
                 {m.role === "assistant" && m.content && (
                   <div className="mt-3 pt-3 border-t border-slate-200/60 flex flex-wrap items-center justify-between gap-2 text-[11px]">
                     {/* Answer check badge */}
-                    <div className="flex items-center space-x-1.5 text-emerald-700 font-medium">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
+                    <div className="flex items-center space-x-1.5 text-emerald-700 font-semibold">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                       <span>
                         {m.faithfulnessPassed ? "All numbers match your data" : "Some numbers could not be checked"}
                       </span>
@@ -194,7 +198,7 @@ export const Copilot: React.FC = () => {
                         onClick={() =>
                           setActiveDetailsIndex(activeDetailsIndex === idx ? null : idx)
                         }
-                        className="text-indigo-600 hover:text-indigo-800 font-medium inline-flex items-center space-x-1 cursor-pointer"
+                        className="text-blue-600 hover:text-blue-800 font-semibold inline-flex items-center space-x-1 cursor-pointer"
                       >
                         <span>How was this worked out?</span>
                         <ChevronDown
@@ -233,7 +237,7 @@ export const Copilot: React.FC = () => {
 
       {/* Always-Visible Quick Questions Pill Strip */}
       <div className="flex items-center space-x-2 overflow-x-auto py-1 px-1 scrollbar-thin">
-        <span className="text-[11px] font-medium text-slate-500 whitespace-nowrap">
+        <span className="text-[11px] font-semibold text-slate-500 whitespace-nowrap">
           Quick queries:
         </span>
         {quickPills.map((pill) => (
@@ -242,7 +246,7 @@ export const Copilot: React.FC = () => {
             type="button"
             onClick={() => handleSend(pill.query)}
             disabled={isStreaming}
-            className="shrink-0 px-2.5 py-1 text-[11px] font-medium bg-slate-50 hover:bg-slate-100 hover:text-slate-900 border border-slate-200 rounded text-slate-700 transition disabled:opacity-50 cursor-pointer"
+            className="shrink-0 px-2.5 py-1 text-[11px] font-medium bg-white hover:bg-blue-50/70 hover:text-blue-700 hover:border-blue-200 border border-slate-200 rounded-lg text-slate-700 transition disabled:opacity-50 cursor-pointer shadow-2xs"
           >
             {pill.label}
           </button>
@@ -255,7 +259,7 @@ export const Copilot: React.FC = () => {
           e.preventDefault();
           handleSend();
         }}
-        className="flex items-center space-x-3 bg-white p-2 rounded-xl border border-slate-200 shadow-2xs"
+        className="flex items-center space-x-3 bg-white p-2 rounded-xl border border-slate-200/90 shadow-2xs focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition"
       >
         <input
           type="text"
@@ -268,7 +272,7 @@ export const Copilot: React.FC = () => {
         <button
           type="submit"
           disabled={!input.trim() || isStreaming}
-          className="p-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition disabled:opacity-50 cursor-pointer shadow-2xs"
+          className="p-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition disabled:opacity-40 cursor-pointer shadow-2xs"
           title="Send question"
         >
           <Send className="w-4 h-4" />
@@ -282,7 +286,7 @@ export const Copilot: React.FC = () => {
             {/* Modal Header */}
             <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
               <div className="flex items-center space-x-2">
-                <div className="p-1.5 bg-indigo-100 text-indigo-700 rounded-lg">
+                <div className="p-1.5 bg-blue-50 text-blue-700 rounded-lg border border-blue-100">
                   <HelpCircle className="w-5 h-5" />
                 </div>
                 <div>
@@ -304,11 +308,11 @@ export const Copilot: React.FC = () => {
             {/* Modal Body */}
             <div className="p-6 overflow-y-auto space-y-6 flex-1">
               {/* How Ask AI works banner */}
-              <div className="p-3.5 bg-indigo-50/70 border border-indigo-100 rounded-xl flex items-start space-x-3 text-xs text-indigo-950">
-                <Info className="w-4 h-4 text-indigo-600 shrink-0 mt-0.5" />
+              <div className="p-3.5 bg-blue-50/70 border border-blue-100 rounded-xl flex items-start space-x-3 text-xs text-blue-950">
+                <Info className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
                 <div className="space-y-1">
-                  <span className="font-semibold text-indigo-900">How Ask AI Works (Zero Hallucination)</span>
-                  <p className="text-indigo-800/80 leading-relaxed text-[11px]">
+                  <span className="font-semibold text-blue-900">How Ask AI Works (Zero Hallucination)</span>
+                  <p className="text-blue-800/80 leading-relaxed text-[11px]">
                     Unlike generic text search (RAG) which guesses answers from text snippets, Ask AI uses <strong>database tool-calling</strong>. It translates your prompt into precise PostgreSQL queries, runs them against your real billing records, and automatically verifies that every single number quoted in the response matches the query output.
                   </p>
                 </div>
@@ -328,10 +332,10 @@ export const Copilot: React.FC = () => {
                         type="button"
                         onClick={() => handleSend(q)}
                         disabled={isStreaming}
-                        className="text-left px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-indigo-50/60 hover:border-indigo-300 text-xs text-slate-700 transition flex items-center justify-between group disabled:opacity-50"
+                        className="text-left px-3.5 py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-blue-50/60 hover:border-blue-200 text-xs text-slate-700 transition flex items-center justify-between group disabled:opacity-50"
                       >
-                        <span className="font-medium group-hover:text-indigo-900">{q}</span>
-                        <Send className="w-3.5 h-3.5 text-slate-400 group-hover:text-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <span className="font-medium group-hover:text-blue-900">{q}</span>
+                        <Send className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                       </button>
                     ))}
                   </div>

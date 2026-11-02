@@ -45,15 +45,15 @@ export const CostExplorer: React.FC = () => {
       </div>
 
       {/* Filter Controls (No more than 3 visible) */}
-      <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-wrap items-center gap-4 text-xs">
+      <div className="card-surface p-4 rounded-xl border border-slate-200/90 shadow-2xs flex flex-wrap items-center gap-4 text-xs">
         {/* 1. Group By */}
         <div className="flex items-center space-x-2">
-          <label htmlFor="group-by-select" className="font-medium text-slate-600">Group by:</label>
+          <label htmlFor="group-by-select" className="font-semibold text-slate-600">Group by:</label>
           <select
             id="group-by-select"
             value={groupBy}
             onChange={(e) => setGroupBy(e.target.value as any)}
-            className="bg-slate-50 border border-slate-300 rounded-md px-3 py-1.5 text-slate-700 font-medium focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="bg-white border border-slate-300 rounded-lg px-3 py-1.5 text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-blue-600"
           >
             <option value="service">Service</option>
             <option value="region">Region</option>
@@ -63,31 +63,31 @@ export const CostExplorer: React.FC = () => {
 
         {/* 2. Start Date */}
         <div className="flex items-center space-x-2">
-          <label htmlFor="from-date-input" className="font-medium text-slate-600">From:</label>
+          <label htmlFor="from-date-input" className="font-semibold text-slate-600">From:</label>
           <input
             id="from-date-input"
             type="date"
             value={fromDate}
             onChange={(e) => setFromDate(e.target.value)}
-            className="bg-slate-50 border border-slate-300 rounded-md px-2.5 py-1.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
 
         {/* 3. End Date */}
         <div className="flex items-center space-x-2">
-          <label htmlFor="to-date-input" className="font-medium text-slate-600">To:</label>
+          <label htmlFor="to-date-input" className="font-semibold text-slate-600">To:</label>
           <input
             id="to-date-input"
             type="date"
             value={toDate}
             onChange={(e) => setToDate(e.target.value)}
-            className="bg-slate-50 border border-slate-300 rounded-md px-2.5 py-1.5 text-slate-700 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
         </div>
       </div>
 
       {/* 1 Chart */}
-      <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs space-y-3">
+      <div className="card-surface p-5 rounded-xl border border-slate-200/90 shadow-2xs space-y-3">
         <h3 className="text-sm font-semibold text-slate-900 capitalize">
           Cost Breakdown by {groupBy}
         </h3>
@@ -103,20 +103,20 @@ export const CostExplorer: React.FC = () => {
               <BarChart data={costs.slice(0, 15)} margin={{ top: 10, right: 10, left: 10, bottom: 25 }}>
                 <XAxis
                   dataKey="key"
-                  tick={{ fontSize: 10 }}
+                  tick={{ fontSize: 10, fill: "#64748b" }}
                   interval={0}
                   angle={-25}
                   textAnchor="end"
                 />
                 <YAxis
-                  tick={{ fontSize: 10 }}
+                  tick={{ fontSize: 10, fill: "#64748b" }}
                   tickFormatter={(v) => `$${v}`}
                 />
                 <Tooltip
                   formatter={(val: any) => [`$${val}`, "Cost"]}
-                  contentStyle={{ backgroundColor: "#ffffff", borderRadius: "8px", border: "1px solid #e2e8f0" }}
+                  contentStyle={{ backgroundColor: "#ffffff", borderRadius: "8px", border: "1px solid #e2e8f0", boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.05)" }}
                 />
-                <Bar dataKey="billed_cost" fill="#4f46e5" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="billed_cost" fill="#2563eb" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           )}
@@ -124,15 +124,15 @@ export const CostExplorer: React.FC = () => {
       </div>
 
       {/* 1 Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
-        <div className="p-4 border-b border-slate-100 flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-slate-900">Summary Table</h3>
-          <span className="text-xs text-slate-400">{costs.length} items</span>
+      <div className="card-surface rounded-xl border border-slate-200/90 shadow-2xs overflow-hidden">
+        <div className="p-4 border-b border-slate-200/90 flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-slate-900">Summary Breakdown</h3>
+          <span className="text-xs text-slate-500 font-mono">{costs.length} items</span>
         </div>
 
         <table className="w-full text-left border-collapse text-xs">
           <thead>
-            <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold">
+            <tr className="bg-slate-50/80 border-b border-slate-200/90 text-slate-600 font-semibold">
               <th className="py-3 px-4 capitalize">{groupBy}</th>
               <th className="py-3 px-4 text-right">Total Cost</th>
               <th className="py-3 px-4 text-right">Share</th>
@@ -140,12 +140,12 @@ export const CostExplorer: React.FC = () => {
           </thead>
           <tbody className="divide-y divide-slate-100">
             {costs.map((row) => (
-              <tr key={row.key} className="hover:bg-slate-50">
-                <td className="py-2.5 px-4 font-medium text-slate-800">{row.key}</td>
-                <td className="py-2.5 px-4 text-right font-semibold text-slate-900">
+              <tr key={row.key} className="hover:bg-slate-50/80">
+                <td className="py-2.5 px-4 font-semibold text-slate-800">{row.key}</td>
+                <td className="py-2.5 px-4 text-right font-bold text-slate-900 tabular-nums">
                   {formatMoney(row.billed_cost)}
                 </td>
-                <td className="py-2.5 px-4 text-right text-slate-500 font-mono">
+                <td className="py-2.5 px-4 text-right text-slate-600 font-mono tabular-nums">
                   {formatPercent(row.share_pct)}
                 </td>
               </tr>
