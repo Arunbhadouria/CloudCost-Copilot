@@ -159,3 +159,4 @@ def generate_cost_forecast(
         "upper_bound_monthly": round(float(upper_bound_month), 2),
         "daily_forecast": daily_forecast
     }
+
