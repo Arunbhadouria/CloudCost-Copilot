@@ -99,6 +99,25 @@ export interface AuditLogItem {
   payload?: Record<string, any>;
 }
 
+export interface ForecastDay {
+  date: string;
+  expected: number;
+  lower: number;
+  upper: number;
+}
+
+export interface CostForecastResponse {
+  dataset_id: string;
+  forecast_days: number;
+  historical_days: number;
+  current_run_rate_monthly: number;
+  projected_next_month_spend: number;
+  projected_growth_pct: number;
+  lower_bound_monthly: number;
+  upper_bound_monthly: number;
+  daily_forecast: ForecastDay[];
+}
+
 export const api = {
   async getDatasets(): Promise<DatasetItem[]> {
     const res = await fetch(`${API_BASE}/datasets`);
@@ -172,6 +191,12 @@ export const api = {
   async getTopCosts(dataset_id: string, n = 5): Promise<CostTopItem[]> {
     const res = await fetch(`${API_BASE}/costs/top?dataset_id=${dataset_id}&n=${n}`);
     if (!res.ok) throw new Error("Could not load top services");
+    return res.json();
+  },
+
+  async getCostForecast(datasetId: string, days = 30): Promise<CostForecastResponse> {
+    const res = await fetch(`${API_BASE}/costs/forecast?dataset_id=${encodeURIComponent(datasetId)}&days=${days}`);
+    if (!res.ok) throw new Error("Could not calculate spend forecast");
     return res.json();
   },
 

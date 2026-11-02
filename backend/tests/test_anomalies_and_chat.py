@@ -8,6 +8,7 @@ from app.models import Base, Dataset, DailySpend
 from app.services.generator import generate_synthetic_dataset
 from app.services.loader import load_csv_dataset
 from app.services.anomaly import detect_anomalies_for_dataset
+from app.services.forecast import generate_cost_forecast
 from app.services.sql_templates import execute_cost_query, execute_get_recommendation
 from app.services.copilot import run_copilot_chat
 from app.config import settings
@@ -96,4 +97,24 @@ def test_copilot_chat_mock_flow(db_session):
     assert len(final_event["answer"]) > 0
     assert "faithfulness" in final_event
     assert final_event["faithfulness"]["passed"] is True
+
+
+def test_forecast_generation(db_session):
+    """Verify 30-day forecast produces realistic projection with confidence bounds."""
+    forecast = generate_cost_forecast(
+        db=db_session,
+        dataset_id="anom-test-syn",
+        forecast_days=30
+    )
+    assert forecast["forecast_days"] == 30
+    assert forecast["historical_days"] >= 30
+    assert forecast["projected_next_month_spend"] > 0
+    assert forecast["lower_bound_monthly"] <= forecast["projected_next_month_spend"]
+    assert forecast["upper_bound_monthly"] >= forecast["projected_next_month_spend"]
+    assert len(forecast["daily_forecast"]) == 30
+    for day in forecast["daily_forecast"]:
+        assert "date" in day
+        assert day["expected"] >= 0
+        assert day["lower"] <= day["expected"] <= day["upper"]
+
 

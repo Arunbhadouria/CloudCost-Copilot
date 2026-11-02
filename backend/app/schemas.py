@@ -137,7 +137,7 @@ class AnomalyItem(BaseModel):
     actual: float
     peak_zscore: float
     severity: str
-    explained_by: Optional[List[Dict[str, Any]]] = None
+    explained_by: Optional[Any] = None
 
 
 # Chat

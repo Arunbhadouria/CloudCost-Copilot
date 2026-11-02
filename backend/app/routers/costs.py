@@ -8,8 +8,20 @@ from sqlalchemy import func
 from app.db import get_db
 from app.models import DailySpend, CostLineItem
 from app.schemas import CostBreakdownItem, CostTopItem
+from app.services.forecast import generate_cost_forecast
 
 router = APIRouter(prefix="/costs", tags=["Costs"])
+
+
+@router.get("/forecast")
+def get_cost_forecast(
+    dataset_id: str = Query(..., description="Target dataset ID"),
+    days: int = Query(default=30, ge=7, le=90, description="Forecast horizon in days"),
+    service: Optional[str] = Query(default=None, description="Optional service name filter"),
+    db: Session = Depends(get_db)
+):
+    """Generate future spend projection with confidence intervals."""
+    return generate_cost_forecast(db=db, dataset_id=dataset_id, forecast_days=days, service_name=service)
 
 
 @router.get("", response_model=List[CostBreakdownItem])
