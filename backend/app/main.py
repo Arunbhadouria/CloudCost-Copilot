@@ -22,13 +22,15 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS configuration for development and frontend web UI
+# CORS configuration for development and frontend web UI (supports cross-domain deployments)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_origin_regex=r"^https?:\/\/.*$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 # Exception handler for consistent error formats
