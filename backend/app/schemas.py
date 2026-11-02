@@ -40,8 +40,8 @@ class CsvUploadResponse(BaseModel):
 
 class SyntheticGenerateRequest(BaseModel):
     seed: int = 1
-    months: int = 12
-    resources: int = 300
+    months: int = 3
+    resources: int = 60
     anomaly_rate: float = 0.05
     start_date: str = "2025-01-01"
 

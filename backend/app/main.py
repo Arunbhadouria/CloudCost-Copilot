@@ -33,12 +33,19 @@ app.add_middleware(
     expose_headers=["*"],
 )
 
-# Exception handler for consistent error formats
+# Exception handler for consistent error formats with CORS headers
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
+    origin = request.headers.get("origin", "*")
     return JSONResponse(
         status_code=500,
-        content={"error": {"code": "INTERNAL_SERVER_ERROR", "message": str(exc)}}
+        content={"error": {"code": "INTERNAL_SERVER_ERROR", "message": str(exc)}},
+        headers={
+            "Access-Control-Allow-Origin": origin,
+            "Access-Control-Allow-Credentials": "true",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers": "*",
+        }
     )
 
 # Include Routers

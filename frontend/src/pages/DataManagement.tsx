@@ -22,7 +22,7 @@ export const DataManagement: React.FC = () => {
 
   // Synthetic state
   const [seed, setSeed] = useState<number>(1);
-  const [months, setMonths] = useState<number>(12);
+  const [months, setMonths] = useState<number>(3);
   const [synthSuccess, setSynthSuccess] = useState<string | null>(null);
 
   // Live GCP state
@@ -63,7 +63,7 @@ export const DataManagement: React.FC = () => {
   });
 
   const syntheticMutation = useMutation({
-    mutationFn: () => api.createSynthetic({ seed, months }),
+    mutationFn: () => api.createSynthetic({ seed, months, resources: 60 }),
     onSuccess: (data) => {
       setSynthSuccess(`Created sample benchmark dataset (${months} months).`);
       refreshDatasets();
