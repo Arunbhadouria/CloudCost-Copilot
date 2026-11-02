@@ -6,7 +6,6 @@ services:
     dockerfilePath: backend/Dockerfile
     dockerContext: .
     plan: free
-    region: oregon
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -28,7 +27,6 @@ services:
     buildCommand: cd frontend && npm install -g pnpm && pnpm install && pnpm run build
     staticPublishPath: frontend/dist
     plan: free
-    region: oregon
     routes:
       - type: rewrite
         source: /*
@@ -40,4 +38,3 @@ databases:
     databaseName: cloudcost
     user: cloudcost
     plan: free
-    region: oregon
