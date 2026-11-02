@@ -344,6 +344,6 @@ class MockResponse:
 def get_llm_client() -> LLMClient:
     """Factory creating LLM client based on LLM_MODE env."""
     mode = os.getenv("LLM_MODE", settings.LLM_MODE).lower()
-    if mode == "live" and settings.GEMINI_API_KEY:
+    if mode in ("live", "gemini") and settings.GEMINI_API_KEY:
         return GeminiClient()
     return MockClient()
